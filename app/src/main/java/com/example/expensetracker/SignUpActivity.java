@@ -19,6 +19,7 @@ public class SignUpActivity extends AppCompatActivity {
     ActivitySignUpBinding binding;
     FirebaseAuth firebaseAuth;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,5 +70,12 @@ public class SignUpActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+    public void onBackPressed(){
+            Intent intent = new Intent(SignUpActivity.this,MainActivity.class);
+            startActivity(intent);
+            super.onBackPressed();
+            finish();
+
     }
 }

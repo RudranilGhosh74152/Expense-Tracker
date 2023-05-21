@@ -1,11 +1,15 @@
 package com.example.expensetracker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.example.expensetracker.databinding.ActivityDashboardBinding;
@@ -16,6 +20,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -28,6 +33,7 @@ public class DashboardActivity extends AppCompatActivity implements OnItemsClick
     private ExpenseAdapter expenseAdapter;
     //Intent intent ;
     private long income,expense=0;
+    private long pressedTime;
 
 
     @Override
@@ -35,6 +41,7 @@ public class DashboardActivity extends AppCompatActivity implements OnItemsClick
         super.onCreate(savedInstanceState);
         binding = ActivityDashboardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         expenseAdapter = new ExpenseAdapter(this,this);
         binding.recycler.setAdapter(expenseAdapter);
@@ -78,6 +85,40 @@ public class DashboardActivity extends AppCompatActivity implements OnItemsClick
                 startActivity(intent);
             }
         });
+    }
+
+    //for menu options
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+       // menu.add("User");
+        menu.add("Logout");
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //for clicking on menu options
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getTitle().equals("Logout"));
+            getLogout();
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void getLogout() {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(DashboardActivity.this,MainActivity.class);
+        startActivity(intent);
+    }
+
+    //function for double press to exit
+    public void onBackPressed() {
+
+        if (pressedTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            finish();
+        } else {
+            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+        }
+        pressedTime = System.currentTimeMillis();
     }
 
     @Override

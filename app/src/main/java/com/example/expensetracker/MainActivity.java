@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     FirebaseAuth firebaseAuth;
 //    ProgressBar pb =  findViewById(R.id.progress_bar);
+    private long pressedTime;
 
       @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,5 +94,15 @@ public class MainActivity extends AppCompatActivity {
 
           //if already logged directly to dashboard
 
+    }
+    //Double press to exit
+    public void onBackPressed(){
+        if (pressedTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            finish();
+        } else {
+            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+        }
+        pressedTime = System.currentTimeMillis();
     }
 }

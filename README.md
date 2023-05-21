@@ -1,0 +1,1 @@
+# Expense-Tracker -This app was a part of final year project and aslo learing Android Studio and how to build android apps.This app is used to track expenses on day to day basis to get a more generalized view of the expenses and to analyze it at the end of day/week/month. 
